@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VITALIS AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a6bbd;
+    --primary-dark: #0d4f8c;
+    --primary-light: #e8f2fc;
+    --secondary: #17a96e;
+    --secondary-dark: #0e7a4f;
+    --secondary-light: #e6f7f1;
+    --accent: #f59e0b;
+    --danger: #e53e3e;
+    --danger-light: #fff5f5;
+    --warning: #dd6b20;
+    --warning-light: #fffaf0;
+    --bg: #f7f9fc;
+    --surface: #ffffff;
+    --surface2: #f0f4f9;
+    --border: #dde3ec;
+    --text: #1a202c;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 16px rgba(26,107,189,0.08);
+    --shadow-md: 0 4px 24px rgba(26,107,189,0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(26,107,189,0.06); }
+  .nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .nav-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .nav-logo svg { width: 20px; height: 20px; }
+  .nav-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
+  .nav-name span { color: var(--secondary); }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; border: none; background: none; }
+  .nav-link:hover, .nav-link.active { background: var(--primary-light); color: var(--primary); }
+  .nav-cta { background: var(--primary); color: #fff; padding: 9px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+  .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+  /* PAGES */
+  .page { display: none; min-height: calc(100vh - 64px); }
+  .page.active { display: block; }
+
+  /* HOME PAGE */
+  .hero { background: linear-gradient(160deg, #0d2d56 0%, #1a6bbd 45%, #17a96e 100%); color: white; padding: 80px 32px 100px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: rgba(255,255,255,0.04); border-radius: 50%; }
+  .hero::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 300px; height: 300px; background: rgba(255,255,255,0.03); border-radius: 50%; }
+  .hero-content { max-width: 760px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; padding: 6px 14px; font-size: 12px; font-weight: 500; margin-bottom: 24px; }
+  .hero-badge-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: 52px; font-weight: 400; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1px; }
+  .hero h1 em { font-style: italic; color: #7ee8c4; }
+  .hero p { font-size: 18px; opacity: 0.85; line-height: 1.6; margin-bottom: 36px; max-width: 580px; margin-left: auto; margin-right: auto; }
+  .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: white; color: var(--primary); padding: 14px 28px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.4); padding: 14px 28px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); }
+  .stats-band { background: var(--surface); border-bottom: 1px solid var(--border); padding: 28px 32px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; max-width: 900px; margin: 0 auto; }
+  .stat-item { text-align: center; padding: 8px 16px; border-right: 1px solid var(--border); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 28px; font-weight: 700; color: var(--primary); font-family: 'DM Serif Display', serif; }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .features-section { padding: 64px 32px; max-width: 1000px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-header h2 { font-family: 'DM Serif Display', serif; font-size: 36px; font-weight: 400; color: var(--text); margin-bottom: 12px; }
+  .section-header p { color: var(--text-secondary); font-size: 16px; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: all 0.2s; }
+  .feature-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 22px; }
+  .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .how-section { background: var(--surface); padding: 64px 32px; }
+  .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 900px; margin: 40px auto 0; }
+  .how-step { text-align: center; }
+  .step-circle { width: 56px; height: 56px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-family: 'DM Serif Display', serif; }
+  .step-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .step-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* CHAT PAGE */
+  .chat-layout { display: grid; grid-template-columns: 280px 1fr 280px; height: calc(100vh - 64px); }
+  .chat-sidebar { background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+  .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); }
+  .sidebar-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 12px; }
+  .new-chat-btn { width: 100%; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; }
+  .new-chat-btn:hover { background: var(--primary-dark); }
+  .lang-selector { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .lang-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+  .lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .lang-btn { padding: 6px 4px; border: 1px solid var(--border); border-radius: 6px; font-size: 11px; text-align: center; cursor: pointer; transition: all 0.15s; background: none; color: var(--text-secondary); }
+  .lang-btn:hover, .lang-btn.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+  .history-list { flex: 1; overflow-y: auto; padding: 8px; }
+  .history-item { padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 2px; transition: all 0.15s; }
+  .history-item:hover { background: var(--surface2); }
+  .history-item.active { background: var(--primary-light); }
+  .history-item-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .history-item-meta { font-size: 11px; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; justify-content: space-between; }
+  .severity-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .severity-dot.low { background: var(--secondary); }
+  .severity-dot.medium { background: var(--warning); }
+  .severity-dot.high { background: var(--danger); }
+  .chat-main { display: flex; flex-direction: column; background: var(--bg); }
+  .chat-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; }
+  .chat-header-info h3 { font-size: 15px; font-weight: 600; }
+  .chat-header-info p { font-size: 12px; color: var(--text-muted); }
+  .chat-header-status { width: 8px; height: 8px; background: var(--secondary); border-radius: 50%; margin-left: auto; }
+  .messages-area { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .message { max-width: 75%; display: flex; flex-direction: column; gap: 4px; }
+  .message.user { align-self: flex-end; align-items: flex-end; }
+  .message.ai { align-self: flex-start; align-items: flex-start; }
+  .message-bubble { padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.6; }
+  .message.user .message-bubble { background: var(--primary); color: white; border-bottom-right-radius: 4px; }
+  .message.ai .message-bubble { background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--text); }
+  .message-time { font-size: 11px; color: var(--text-muted); }
+  .severity-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; margin: 6px 0 10px; }
+  .severity-badge.low { background: var(--secondary-light); color: var(--secondary-dark); border: 1px solid rgba(23,169,110,0.2); }
+  .severity-badge.medium { background: var(--warning-light); color: var(--warning); border: 1px solid rgba(221,107,32,0.2); }
+  .severity-badge.high { background: var(--danger-light); color: var(--danger); border: 1px solid rgba(229,62,62,0.2); }
+  .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 8px 0; min-width: 300px; box-shadow: var(--shadow); }
+  .ai-card-section { margin-bottom: 12px; }
+  .ai-card-section:last-child { margin-bottom: 0; }
+  .ai-card-section h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+  .ai-card-section p { font-size: 13px; color: var(--text); line-height: 1.6; }
+  .precautions-list { list-style: none; }
+  .precautions-list li { font-size: 13px; color: var(--text-secondary); padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
+  .precautions-list li::before { content: '✓'; color: var(--secondary); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .disclaimer { font-size: 11px; color: var(--text-muted); background: var(--surface2); border-radius: 6px; padding: 8px 10px; margin-top: 10px; display: flex; gap: 6px; }
+  .disclaimer::before { content: 'ⓘ'; flex-shrink: 0; }
+  .input-area { background: var(--surface); border-top: 1px solid var(--border); padding: 16px 24px; }
+  .input-bar { display: flex; align-items: flex-end; gap: 10px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 20px; padding: 10px 14px; transition: all 0.15s; }
+  .input-bar:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,107,189,0.08); }
+  .msg-input { flex: 1; background: none; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); resize: none; min-height: 22px; max-height: 120px; line-height: 1.5; }
+  .msg-input::placeholder { color: var(--text-muted); }
+  .input-btns { display: flex; gap: 6px; align-items: center; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .icon-btn.voice { background: var(--surface2); color: var(--text-secondary); }
+  .icon-btn.voice:hover { background: var(--primary-light); color: var(--primary); }
+  .icon-btn.voice.recording { background: var(--danger-light); color: var(--danger); animation: pulse 1s infinite; }
+  .icon-btn.send { background: var(--primary); color: white; }
+  .icon-btn.send:hover { background: var(--primary-dark); }
+  .typing-indicator { display: flex; gap: 4px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 4px; width: fit-content; }
+  .typing-dot { width: 7px; height: 7px; background: var(--text-muted); border-radius: 50%; }
+  .typing-dot:nth-child(1) { animation: bounce 1.2s ease-in-out infinite 0s; }
+  .typing-dot:nth-child(2) { animation: bounce 1.2s ease-in-out infinite 0.2s; }
+  .typing-dot:nth-child(3) { animation: bounce 1.2s ease-in-out infinite 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} }
+
+  /* RIGHT PANEL */
+  .right-panel { background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .panel-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .panel-tab { flex: 1; padding: 14px 8px; font-size: 12px; font-weight: 500; text-align: center; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none; }
+  .panel-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .panel-content { flex: 1; overflow-y: auto; padding: 16px; }
+  .vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .vital-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 12px; }
+  .vital-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+  .vital-value { font-size: 20px; font-weight: 700; font-family: 'DM Serif Display', serif; color: var(--text); }
+  .vital-unit { font-size: 10px; font-weight: 400; color: var(--text-muted); }
+  .hospital-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+  .hospital-card:hover { border-color: var(--primary); background: var(--primary-light); }
+  .hospital-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .hospital-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 10px; margin-bottom: 8px; }
+  .hospital-btn { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer; }
+  .map-placeholder { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--text-muted); gap: 6px; font-size: 12px; position: relative; overflow: hidden; }
+  .map-grid { position: absolute; inset: 0; opacity: 0.4; }
+
+  /* HISTORY PAGE */
+  .history-page { padding: 40px 32px; max-width: 900px; margin: 0 auto; }
+  .history-page h1 { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; margin-bottom: 24px; }
+  .history-filters { display: flex; gap: 8px; margin-bottom: 24px; }
+  .filter-btn { padding: 7px 16px; border-radius: 100px; border: 1px solid var(--border); background: none; font-size: 13px; cursor: pointer; color: var(--text-secondary); transition: all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .history-cards { display: grid; gap: 12px; }
+  .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all 0.2s; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+  .history-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+  .history-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .history-card-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .history-card-meta { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+  .history-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+  /* ABOUT PAGE */
+  .about-page { max-width: 800px; margin: 0 auto; padding: 60px 32px; }
+  .about-page h1 { font-family: 'DM Serif Display', serif; font-size: 42px; font-weight: 400; margin-bottom: 16px; color: var(--primary); }
+  .about-page .lead { font-size: 18px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 40px; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+  .about-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .about-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--primary); }
+  .about-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .tech-stack { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-top: 24px; }
+  .tech-stack h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-tag { background: var(--primary-light); color: var(--primary); padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+
+  /* CONTACT PAGE */
+  .contact-page { max-width: 700px; margin: 0 auto; padding: 60px 32px; }
+  .contact-page h1 { font-family: 'DM Serif Display', serif; font-size: 36px; font-weight: 400; margin-bottom: 12px; }
+  .contact-page p { color: var(--text-secondary); margin-bottom: 36px; font-size: 16px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .form-input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--surface); outline: none; transition: all 0.15s; }
+  .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,107,189,0.08); }
+  textarea.form-input { resize: vertical; min-height: 120px; }
+  .submit-btn { background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); padding: 13px 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.15s; width: 100%; }
+  .submit-btn:hover { background: var(--primary-dark); }
+  .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+  .contact-icon { font-size: 28px; margin-bottom: 8px; }
+  .contact-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .contact-card p { font-size: 12px; color: var(--text-muted); }
+
+  /* EMERGENCY ALERT */
+  .emergency-alert { background: linear-gradient(135deg, #fff5f5, #ffe4e4); border: 1.5px solid rgba(229,62,62,0.3); border-radius: var(--radius); padding: 14px 16px; margin: 8px 0; display: flex; gap: 10px; align-items: flex-start; }
+  .emergency-icon { font-size: 20px; flex-shrink: 0; }
+  .emergency-text h4 { font-size: 13px; font-weight: 700; color: var(--danger); margin-bottom: 4px; }
+  .emergency-text p { font-size: 12px; color: #c53030; line-height: 1.5; }
+  .emergency-btn { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+
+  /* QUICK SYMPTOMS */
+  .quick-symptoms { padding: 12px 0 4px; }
+  .quick-label { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .symptom-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .symptom-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 100px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: var(--text-secondary); transition: all 0.12s; }
+  .symptom-chip:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+  /* Voice recording animation */
+  .voice-wave { display: flex; align-items: center; gap: 3px; height: 20px; }
+  .voice-bar { width: 3px; background: var(--danger); border-radius: 2px; animation: wave 1s ease-in-out infinite; }
+  .voice-bar:nth-child(1) { animation-delay: 0s; }
+  .voice-bar:nth-child(2) { animation-delay: 0.1s; }
+  .voice-bar:nth-child(3) { animation-delay: 0.2s; }
+  .voice-bar:nth-child(4) { animation-delay: 0.3s; }
+  .voice-bar:nth-child(5) { animation-delay: 0.4s; }
+  @keyframes wave { 0%,100%{height:6px} 50%{height:18px} }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+  .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white; padding: 12px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; z-index: 1000; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Animations */
+  .fade-in { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .slide-in { animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="showPage('home')">
+    <div class="nav-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    </div>
+    <span class="nav-name">VITALIS <span>AI</span></span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-home" onclick="showPage('home')">Home</button>
+    <button class="nav-link" id="nav-chat" onclick="showPage('chat')">Consult AI</button>
+    <button class="nav-link" id="nav-history" onclick="showPage('history')">History</button>
+    <button class="nav-link" id="nav-about" onclick="showPage('about')">About</button>
+    <button class="nav-link" id="nav-contact" onclick="showPage('contact')">Contact</button>
+  </div>
+  <button class="nav-cta" onclick="showPage('chat')">Start Free Consultation →</button>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AI-Powered Healthcare · 12 Languages Supported
+      </div>
+      <h1>Healthcare <em>for everyone,</em><br>everywhere</h1>
+      <p>Instant AI triage, multilingual symptom assessment, and nearest hospital finder — bringing quality healthcare guidance to 900 million underserved rural citizens.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="showPage('chat')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          Start Consultation
+        </button>
+        <button class="btn-outline" onclick="showPage('about')">Learn More →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-band">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">900M+</div>
+        <div class="stat-label">Rural citizens underserved</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">74%</div>
+        <div class="stat-label">Lack access to quality care</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Languages supported</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">&lt;30s</div>
+        <div class="stat-label">Average triage time</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-section">
+    <div class="section-header">
+      <h2>Everything you need for better health</h2>
+      <p>From symptom input to hospital directions — all in one place</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#e8f2fc;">🩺</div>
+        <h3>AI Triage</h3>
+        <p>Advanced symptom analysis using Claude AI to assess severity and recommend next steps instantly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#e6f7f1;">🎤</div>
+        <h3>Voice Input</h3>
+        <p>Describe symptoms in your own language using voice — no typing required, no language barrier.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fff7e6;">🗺️</div>
+        <h3>Hospital Finder</h3>
+        <p>Instantly locate and get directions to the 5 nearest hospitals and clinics when urgent care is needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fff5f5;">🚨</div>
+        <h3>Emergency Alerts</h3>
+        <p>Critical severity cases trigger immediate emergency guidance with direct ambulance contact information.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#f0fff4;">📋</div>
+        <h3>Health History</h3>
+        <p>All your consultations saved securely. Track symptoms over time and share reports with your doctor.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#faf5ff;">🔒</div>
+        <h3>Privacy First</h3>
+        <p>JWT-authenticated sessions, encrypted data storage, and full HIPAA-aligned data handling practices.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-section">
+    <div class="section-header">
+      <h2>How it works</h2>
+      <p>Get a medical assessment in 4 simple steps</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-circle">1</div>
+        <div class="step-title">Describe Symptoms</div>
+        <div class="step-desc">Type or speak your symptoms in any language</div>
+      </div>
+      <div class="how-step">
+        <div class="step-circle">2</div>
+        <div class="step-title">AI Analysis</div>
+        <div class="step-desc">Our AI triage engine assesses your condition</div>
+      </div>
+      <div class="how-step">
+        <div class="step-circle">3</div>
+        <div class="step-title">Get Guidance</div>
+        <div class="step-desc">Receive personalized advice and precautions</div>
+      </div>
+      <div class="how-step">
+        <div class="step-circle">4</div>
+        <div class="step-title">Find Care</div>
+        <div class="step-desc">Navigate to the nearest hospital if needed</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT PAGE -->
+<div class="page" id="page-chat">
+  <div class="chat-layout">
+    <!-- Left sidebar -->
+    <div class="chat-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Consultations</div>
+        <button class="new-chat-btn" onclick="newChat()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          New Consultation
+        </button>
+      </div>
+      <div class="lang-selector">
+        <div class="lang-label">Language</div>
+        <div class="lang-grid">
+          <button class="lang-btn active" onclick="setLang('en', this)">English</button>
+          <button class="lang-btn" onclick="setLang('hi', this)">हिंदी</button>
+          <button class="lang-btn" onclick="setLang('bn', this)">বাংলা</button>
+          <button class="lang-btn" onclick="setLang('ta', this)">தமிழ்</button>
+          <button class="lang-btn" onclick="setLang('te', this)">తెలుగు</button>
+          <button class="lang-btn" onclick="setLang('mr', this)">मराठी</button>
+        </div>
+      </div>
+      <div class="history-list" id="sidebar-history">
+        <div class="history-item active">
+          <div class="history-item-title">Current Session</div>
+          <div class="history-item-meta"><span>Just now</span><span class="severity-dot low"></span></div>
+        </div>
+        <div class="history-item">
+          <div class="history-item-title">Headache & fever symptoms</div>
+          <div class="history-item-meta"><span>2 hours ago</span><span class="severity-dot medium"></span></div>
+        </div>
+        <div class="history-item">
+          <div class="history-item-title">Chest pain consultation</div>
+          <div class="history-item-meta"><span>Yesterday</span><span class="severity-dot high"></span></div>
+        </div>
+        <div class="history-item">
+          <div class="history-item-title">Seasonal allergy symptoms</div>
+          <div class="history-item-meta"><span>3 days ago</span><span class="severity-dot low"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat main -->
+    <div class="chat-main">
+      <div class="chat-header">
+        <div class="chat-header-avatar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="chat-header-info">
+          <h3>VITALIS AI Assistant</h3>
+          <p id="lang-indicator">Responding in English</p>
+        </div>
+        <div class="chat-header-status"></div>
+      </div>
+
+      <div class="messages-area" id="messages">
+        <!-- Welcome message -->
+        <div class="message ai fade-in">
+          <div class="message-bubble">
+            <strong>Hello! I'm VITALIS AI</strong> 👋<br><br>
+            I'm here to help you assess your health symptoms and guide you toward appropriate care. Please describe what you're experiencing and I'll provide a preliminary assessment.<br><br>
+            <em style="color: var(--text-muted); font-size: 13px;">⚠️ This is not a substitute for professional medical advice. Always consult a qualified doctor for diagnosis.</em>
+          </div>
+          <span class="message-time">Just now</span>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="quick-symptoms">
+          <div class="quick-label">Quick symptom shortcuts:</div>
+          <div class="symptom-chips">
+            <span class="symptom-chip" onclick="fillInput('I have a headache and fever')">🤕 Headache + Fever</span>
+            <span class="symptom-chip" onclick="fillInput('I have chest pain and shortness of breath')">💔 Chest Pain</span>
+            <span class="symptom-chip" onclick="fillInput('I have stomach pain and nausea')">🤢 Stomach Pain</span>
+            <span class="symptom-chip" onclick="fillInput('I have a rash on my skin')">🔴 Skin Rash</span>
+            <span class="symptom-chip" onclick="fillInput('I have difficulty breathing')">😮‍💨 Breathing Issues</span>
+          </div>
+        </div>
+        <div class="input-bar">
+          <textarea class="msg-input" id="msg-input" placeholder="Describe your symptoms..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <div class="input-btns">
+            <button class="icon-btn voice" id="voice-btn" onclick="toggleVoice()" title="Voice input">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </button>
+            <button class="icon-btn send" onclick="sendMessage()" title="Send">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="right-panel">
+      <div class="panel-tabs">
+        <button class="panel-tab active" id="tab-info" onclick="switchTab('info')">Analysis</button>
+        <button class="panel-tab" id="tab-map" onclick="switchTab('map')">Hospitals</button>
+      </div>
+
+      <div class="panel-content" id="panel-info">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 10px;">Current Status</div>
+          <div id="severity-display" style="text-align: center; padding: 20px; background: var(--surface2); border-radius: var(--radius-sm);">
+            <div style="font-size: 32px; margin-bottom: 8px;">🩺</div>
+            <div style="font-size: 13px; color: var(--text-muted);">Awaiting consultation</div>
+          </div>
+        </div>
+        <div class="vitals-grid">
+          <div class="vital-card">
+            <div class="vital-label">Session</div>
+            <div class="vital-value" id="session-count">0</div>
+            <div class="vital-unit">messages</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Severity</div>
+            <div class="vital-value" id="severity-count" style="font-size: 14px; color: var(--text-muted);">—</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px;">Quick Actions</div>
+        <div style="display: grid; gap: 8px;">
+          <button onclick="showPage('history')" style="background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; font-size: 13px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; color: var(--text);">
+            📋 View consultation history
+          </button>
+          <button onclick="switchTab('map')" style="background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; font-size: 13px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; color: var(--text);">
+            🏥 Find nearby hospitals
+          </button>
+          <button onclick="callEmergency()" style="background: var(--danger-light); border: 1px solid rgba(229,62,62,0.2); border-radius: var(--radius-sm); padding: 10px; font-size: 13px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; color: var(--danger); font-weight: 600;">
+            🚨 Emergency — Call 108
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-content" id="panel-map" style="display: none;">
+        <div class="map-placeholder">
+          <svg class="map-grid" viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--border)" stroke-width="0.5"/></pattern></defs>
+            <rect width="280" height="140" fill="url(#grid)"/>
+            <circle cx="140" cy="70" r="8" fill="var(--danger)" opacity="0.8"/>
+            <circle cx="140" cy="70" r="14" fill="none" stroke="var(--danger)" opacity="0.3" stroke-width="1.5"/>
+            <circle cx="140" cy="70" r="20" fill="none" stroke="var(--danger)" opacity="0.15" stroke-width="1"/>
+            <circle cx="80" cy="40" r="5" fill="var(--primary)" opacity="0.7"/>
+            <circle cx="200" cy="55" r="5" fill="var(--primary)" opacity="0.7"/>
+            <circle cx="170" cy="110" r="5" fill="var(--primary)" opacity="0.7"/>
+            <circle cx="60" cy="100" r="5" fill="var(--primary)" opacity="0.7"/>
+            <circle cx="240" cy="90" r="5" fill="var(--primary)" opacity="0.7"/>
+          </svg>
+          <div style="position: relative; z-index: 1; background: var(--surface); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);">📍 Your Location</div>
+        </div>
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px;">Nearby Hospitals</div>
+        <div class="hospital-card">
+          <div class="hospital-name">City General Hospital</div>
+          <div class="hospital-meta"><span>🏥 Multi-specialty</span><span>📍 1.2 km</span></div>
+          <div class="hospital-meta" style="margin-bottom: 6px;"><span>⭐ 4.6</span><span style="color: var(--secondary);">● Open 24/7</span></div>
+          <button class="hospital-btn" onclick="showToast('Opening directions...')">Get Directions</button>
+        </div>
+        <div class="hospital-card">
+          <div class="hospital-name">Apollo Clinic</div>
+          <div class="hospital-meta"><span>🏥 General</span><span>📍 2.1 km</span></div>
+          <div class="hospital-meta" style="margin-bottom: 6px;"><span>⭐ 4.3</span><span style="color: var(--secondary);">● Open Now</span></div>
+          <button class="hospital-btn" onclick="showToast('Opening directions...')">Get Directions</button>
+        </div>
+        <div class="hospital-card">
+          <div class="hospital-name">District Health Centre</div>
+          <div class="hospital-meta"><span>🏥 Government</span><span>📍 3.4 km</span></div>
+          <div class="hospital-meta" style="margin-bottom: 6px;"><span>⭐ 4.1</span><span style="color: var(--warning);">● Closes at 8 PM</span></div>
+          <button class="hospital-btn" onclick="showToast('Opening directions...')">Get Directions</button>
+        </div>
+        <div class="hospital-card">
+          <div class="hospital-name">Rural Medical Institute</div>
+          <div class="hospital-meta"><span>🏥 General</span><span>📍 4.8 km</span></div>
+          <div class="hospital-meta" style="margin-bottom: 6px;"><span>⭐ 4.0</span><span style="color: var(--secondary);">● Open 24/7</span></div>
+          <button class="hospital-btn" onclick="showToast('Opening directions...')">Get Directions</button>
+        </div>
+        <div class="hospital-card">
+          <div class="hospital-name">Emergency Care Center</div>
+          <div class="hospital-meta"><span>🏥 Emergency</span><span>📍 5.1 km</span></div>
+          <div class="hospital-meta" style="margin-bottom: 6px;"><span>⭐ 4.4</span><span style="color: var(--secondary);">● Open 24/7</span></div>
+          <button class="hospital-btn" onclick="showToast('Opening directions...')">Get Directions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY PAGE -->
+<div class="page" id="page-history">
+  <div class="history-page">
+    <h1>Consultation History</h1>
+    <div class="history-filters">
+      <button class="filter-btn active" onclick="filterHistory('all', this)">All</button>
+      <button class="filter-btn" onclick="filterHistory('low', this)">🟢 Low Risk</button>
+      <button class="filter-btn" onclick="filterHistory('medium', this)">🟡 Medium Risk</button>
+      <button class="filter-btn" onclick="filterHistory('high', this)">🔴 High Risk</button>
+    </div>
+    <div class="history-cards" id="history-cards">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-page">
+    <h1>About VITALIS AI</h1>
+    <p class="lead">VITALIS AI is a multilingual, AI-powered healthcare assistant designed to bridge the healthcare gap for 900 million rural and underserved citizens across India and beyond.</p>
+    <p style="color: var(--text-secondary); line-height: 1.8; font-size: 15px;">We believe that access to quality healthcare guidance should not be limited by geography, language, or economic status. By combining state-of-the-art AI triage with multilingual support and real-time hospital finding, VITALIS AI empowers individuals to make informed health decisions from anywhere.</p>
+    <div class="about-grid">
+      <div class="about-card">
+        <h3>🎯 Our Mission</h3>
+        <p>Democratize access to preliminary healthcare guidance through technology — making expert-level triage available to every person regardless of location or language.</p>
+      </div>
+      <div class="about-card">
+        <h3>🔬 How AI Works</h3>
+        <p>We use Claude AI with structured medical triage prompts to analyze symptoms, assess severity levels, and generate evidence-based recommendations and precautions.</p>
+      </div>
+      <div class="about-card">
+        <h3>🌍 Multilingual Support</h3>
+        <p>Supporting 12 Indian regional languages including Hindi, Bengali, Tamil, Telugu, Kannada, and more — with voice input for those who prefer speaking.</p>
+      </div>
+      <div class="about-card">
+        <h3>🔐 Privacy & Security</h3>
+        <p>JWT-based authentication, encrypted data storage on MongoDB Atlas, and strict data handling policies ensure your health data remains private and secure.</p>
+      </div>
+    </div>
+    <div class="tech-stack">
+      <h3>Technology Stack</h3>
+      <div class="tech-tags">
+        <span class="tech-tag">React + Vite</span>
+        <span class="tech-tag">Tailwind CSS</span>
+        <span class="tech-tag">Node.js + Express</span>
+        <span class="tech-tag">MongoDB Atlas</span>
+        <span class="tech-tag">Claude AI API</span>
+        <span class="tech-tag">Google Maps API</span>
+        <span class="tech-tag">Web Speech API</span>
+        <span class="tech-tag">JWT Auth</span>
+        <span class="tech-tag">Bhashini API</span>
+        <span class="tech-tag">Vercel</span>
+        <span class="tech-tag">Render</span>
+        <span class="tech-tag">REST APIs</span>
+      </div>
+    </div>
+    <div style="margin-top: 32px; background: var(--primary-light); border: 1px solid rgba(26,107,189,0.15); border-radius: var(--radius); padding: 20px; display: flex; gap: 16px; align-items: center;">
+      <div style="font-size: 40px;">⚠️</div>
+      <div>
+        <h4 style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--primary);">Medical Disclaimer</h4>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">VITALIS AI provides general health information and preliminary symptom assessment. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional for medical concerns.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <h1>Contact Us</h1>
+    <p>Have questions, feedback, or need support? We're here to help make VITALIS AI better for everyone.</p>
+    <div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" placeholder="Your full name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-input">
+          <option>General Inquiry</option>
+          <option>Technical Support</option>
+          <option>Partnership</option>
+          <option>Report an Issue</option>
+          <option>Feature Request</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-input" placeholder="Tell us how we can help..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="showToast('Message sent! We\'ll respond within 24 hours.')">Send Message →</button>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <h4>Email</h4>
+        <p>support@vitalis.ai</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <h4>Helpline</h4>
+        <p>1800-VITALIS (Free)</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🚨</div>
+        <h4>Emergency</h4>
+        <p>Dial 108 or 112</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =====================
+// STATE
+// =====================
+let currentLang = 'en';
+let messageCount = 0;
+let isRecording = false;
+let recognition = null;
+let currentSeverity = null;
+
+const langMap = {
+  en: 'Responding in English',
+  hi: 'हिंदी में जवाब दे रहे हैं',
+  bn: 'বাংলায় উত্তর দিচ্ছি',
+  ta: 'தமிழில் பதிலளிக்கிறேன்',
+  te: 'తెలుగులో జవాబు ఇస్తున్నాను',
+  mr: 'मराठीत उत्तर देत आहे'
+};
+
+// Mock history data
+const historyData = [
+  { id: 1, title: 'Headache & high fever', summary: 'Reported persistent headache with 103°F fever and body aches for 2 days.', severity: 'medium', advice: 'Rest, hydration, paracetamol. Visit doctor if fever persists >3 days.', time: '2 hours ago', date: '2025-04-27' },
+  { id: 2, title: 'Chest pain & shortness of breath', summary: 'Sudden chest pain radiating to left arm with difficulty breathing.', severity: 'high', advice: 'EMERGENCY — Seek immediate medical attention. Called ambulance.', time: 'Yesterday', date: '2025-04-26' },
+  { id: 3, title: 'Seasonal allergy symptoms', summary: 'Sneezing, runny nose, watery eyes — worse in mornings.', severity: 'low', advice: 'Antihistamines, avoid allergens, HEPA filter recommended.', time: '3 days ago', date: '2025-04-24' },
+  { id: 4, title: 'Lower back pain', summary: 'Mild lower back pain after long sitting hours at desk job.', severity: 'low', advice: 'Stretching exercises, ergonomic chair, warm compress.', time: '5 days ago', date: '2025-04-22' },
+  { id: 5, title: 'Stomach pain & vomiting', summary: 'Abdominal cramps with nausea and 3 episodes of vomiting.', severity: 'medium', advice: 'ORS for hydration, bland diet, antacid. Consult if worsens.', time: '1 week ago', date: '2025-04-20' }
+];
+
+// =====================
+// PAGE NAVIGATION
+// =====================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page)?.classList.add('active');
+  if (page === 'history') renderHistory('all');
+}
+
+// =====================
+// LANGUAGE
+// =====================
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('lang-indicator').textContent = langMap[lang] || 'Responding in ' + lang;
+  showToast('Language changed to ' + btn.textContent);
+}
+
+// =====================
+// CHAT
+// =====================
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function fillInput(text) {
+  const input = document.getElementById('msg-input');
+  input.value = text;
+  autoResize(input);
+  input.focus();
+}
+
+function newChat() {
+  const messages = document.getElementById('messages');
+  messages.innerHTML = `
+    <div class="message ai fade-in">
+      <div class="message-bubble">
+        <strong>New consultation started!</strong><br><br>
+        Hello! I'm ready to help you assess your symptoms. Please describe what you're experiencing today.
+        <br><br><em style="color: var(--text-muted); font-size: 13px;">⚠️ Not a substitute for professional medical advice.</em>
+      </div>
+      <span class="message-time">Just now</span>
+    </div>`;
+  messageCount = 0;
+  currentSeverity = null;
+  document.getElementById('session-count').textContent = '0';
+  document.getElementById('severity-count').textContent = '—';
+  document.getElementById('severity-count').style.color = 'var(--text-muted)';
+  document.getElementById('severity-display').innerHTML = `<div style="font-size: 32px; margin-bottom: 8px;">🩺</div><div style="font-size: 13px; color: var(--text-muted);">Awaiting consultation</div>`;
+  showToast('New consultation started');
+}
+
+async function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  autoResize(input);
+  messageCount++;
+  document.getElementById('session-count').textContent = messageCount;
+
+  // Add user message
+  addMessage('user', text);
+
+  // Show typing indicator
+  const typingId = showTyping();
+
+  try {
+    const response = await callClaudeAPI(text);
+    removeTyping(typingId);
+    processAIResponse(response, text);
+  } catch (err) {
+    removeTyping(typingId);
+    addMessage('ai', 'I apologize — I encountered an error processing your request. Please try again or call emergency services if this is urgent.');
+    console.error(err);
+  }
+}
+
+async function callClaudeAPI(symptoms) {
+  const langInstructions = {
+    en: 'Respond in English.',
+    hi: 'Respond in Hindi (हिंदी). Keep medical terms in English.',
+    bn: 'Respond in Bengali (বাংলা). Keep medical terms in English.',
+    ta: 'Respond in Tamil (தமிழ்). Keep medical terms in English.',
+    te: 'Respond in Telugu (తెలుగు). Keep medical terms in English.',
+    mr: 'Respond in Marathi (मराठी). Keep medical terms in English.'
+  };
+
+  const systemPrompt = `You are VITALIS AI, a medical triage assistant for rural healthcare in India. 
+${langInstructions[currentLang] || 'Respond in English.'}
+
+Analyze the symptoms and respond with a JSON object (no markdown, raw JSON only) with this exact structure:
+{
+  "severity": "low" | "medium" | "high",
+  "emergency": true | false,
+  "initial_response": "A warm, empathetic 1-2 sentence acknowledgment of the patient's concern",
+  "assessment": "2-3 sentence medical assessment of likely conditions",
+  "advice": "3-4 specific actionable recommendations",
+  "precautions": ["precaution 1", "precaution 2", "precaution 3"],
+  "when_to_seek_help": "Clear guidance on when to go to hospital",
+  "disclaimer": "This is not a medical diagnosis. Please consult a qualified doctor."
+}
+
+Severity guidelines:
+- low: minor symptoms, home care sufficient
+- medium: needs monitoring, doctor visit within 24-48 hours
+- high: potentially serious, urgent medical attention needed within hours
+
+Be compassionate, clear, and practical. Always err on the side of caution.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: `Patient symptoms: ${symptoms}` }]
+    })
+  });
+
+  const data = await res.json();
+  const text = data.content.map(i => i.text || '').join('');
+  const clean = text.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+function processAIResponse(data, originalSymptoms) {
+  currentSeverity = data.severity;
+
+  // Update severity display
+  updateSeverityDisplay(data.severity, data.emergency);
+
+  // Build AI response
+  if (data.emergency) {
+    const emergency = document.createElement('div');
+    emergency.className = 'emergency-alert fade-in';
+    emergency.innerHTML = `
+      <div class="emergency-icon">🚨</div>
+      <div class="emergency-text">
+        <h4>Emergency Detected</h4>
+        <p>Your symptoms may require immediate medical attention. Please call emergency services or go to the nearest hospital immediately.</p>
+        <button class="emergency-btn" onclick="callEmergency()">Call 108 — Emergency</button>
+      </div>`;
+    document.getElementById('messages').appendChild(emergency);
+    switchTab('map');
+  }
+
+  // AI card response
+  const cardDiv = document.createElement('div');
+  cardDiv.className = 'message ai slide-in';
+  cardDiv.innerHTML = `
+    <div class="ai-card">
+      <div class="ai-card-section">
+        <p style="font-size: 14px; line-height: 1.6;">${data.initial_response}</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin: 8px 0 12px;">
+        <span class="severity-badge ${data.severity}">
+          ${data.severity === 'low' ? '🟢' : data.severity === 'medium' ? '🟡' : '🔴'} ${data.severity.toUpperCase()} SEVERITY
+        </span>
+      </div>
+      <div class="ai-card-section">
+        <h4>Assessment</h4>
+        <p>${data.assessment}</p>
+      </div>
+      <div class="ai-card-section">
+        <h4>Advice</h4>
+        <p>${data.advice}</p>
+      </div>
+      <div class="ai-card-section">
+        <h4>Precautions</h4>
+        <ul class="precautions-list">
+          ${data.precautions.map(p => `<li>${p}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="ai-card-section">
+        <h4>When to Seek Medical Help</h4>
+        <p>${data.when_to_seek_help}</p>
+      </div>
+      <div class="disclaimer">${data.disclaimer}</div>
+    </div>
+    <span class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>`;
+  document.getElementById('messages').appendChild(cardDiv);
+
+  // Auto-show hospitals for high severity
+  if (data.severity === 'high') {
+    switchTab('map');
+  }
+
+  // Add to sidebar history
+  addToSidebarHistory(originalSymptoms.substring(0, 30) + '...', data.severity);
+  document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+}
+
+function updateSeverityDisplay(severity, emergency) {
+  const icons = { low: '🟢', medium: '🟡', high: '🔴' };
+  const labels = { low: 'Low Risk', medium: 'Medium Risk', high: 'High Risk' };
+  const colors = { low: 'var(--secondary)', medium: 'var(--warning)', high: 'var(--danger)' };
+
+  document.getElementById('severity-display').innerHTML = `
+    <div style="font-size: 36px; margin-bottom: 8px;">${icons[severity]}</div>
+    <div style="font-size: 16px; font-weight: 700; color: ${colors[severity]};">${labels[severity]}</div>
+    ${emergency ? '<div style="font-size: 11px; color: var(--danger); margin-top: 4px; font-weight: 600;">⚠️ SEEK IMMEDIATE CARE</div>' : ''}`;
+
+  document.getElementById('severity-count').textContent = labels[severity];
+  document.getElementById('severity-count').style.color = colors[severity];
+  document.getElementById('severity-count').style.fontSize = '12px';
+  document.getElementById('severity-count').style.fontWeight = '600';
+}
+
+function addMessage(type, content) {
+  const div = document.createElement('div');
+  div.className = `message ${type} fade-in`;
+  div.innerHTML = `
+    <div class="message-bubble">${content}</div>
+    <span class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>`;
+  document.getElementById('messages').appendChild(div);
+  document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+}
+
+function showTyping() {
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'message ai';
+  div.id = id;
+  div.innerHTML = `<div class="typing-indicator">
+    <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+  </div>`;
+  document.getElementById('messages').appendChild(div);
+  document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+  return id;
+}
+
+function removeTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function addToSidebarHistory(title, severity) {
+  const list = document.getElementById('sidebar-history');
+  const existing = list.querySelectorAll('.history-item');
+  existing.forEach(i => i.classList.remove('active'));
+  const item = document.createElement('div');
+  item.className = 'history-item active';
+  item.innerHTML = `
+    <div class="history-item-title">${title}</div>
+    <div class="history-item-meta">
+      <span>Just now</span>
+      <span class="severity-dot ${severity}"></span>
+    </div>`;
+  list.insertBefore(item, list.firstChild);
+}
+
+// =====================
+// VOICE
+// =====================
+function toggleVoice() {
+  if (!isRecording) {
+    startRecording();
+  } else {
+    stopRecording();
+  }
+}
+
+function startRecording() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showToast('Voice input not supported in this browser');
+    return;
+  }
+  recognition = new SpeechRecognition();
+  const langCodes = { en: 'en-IN', hi: 'hi-IN', bn: 'bn-IN', ta: 'ta-IN', te: 'te-IN', mr: 'mr-IN' };
+  recognition.lang = langCodes[currentLang] || 'en-IN';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    document.getElementById('msg-input').value = transcript;
+    autoResize(document.getElementById('msg-input'));
+  };
+  recognition.onend = () => { isRecording = false; updateVoiceBtn(); };
+  recognition.onerror = () => { showToast('Voice recognition error. Try again.'); isRecording = false; updateVoiceBtn(); };
+  recognition.start();
+  isRecording = true;
+  updateVoiceBtn();
+  showToast('Listening... speak now');
+}
+
+function stopRecording() {
+  if (recognition) recognition.stop();
+  isRecording = false;
+  updateVoiceBtn();
+}
+
+function updateVoiceBtn() {
+  const btn = document.getElementById('voice-btn');
+  if (isRecording) {
+    btn.classList.add('recording');
+    btn.innerHTML = `<div class="voice-wave">${'<div class="voice-bar"></div>'.repeat(5)}</div>`;
+  } else {
+    btn.classList.remove('recording');
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`;
+  }
+}
+
+// =====================
+// TABS
+// =====================
+function switchTab(tab) {
+  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('panel-info').style.display = tab === 'info' ? 'block' : 'none';
+  document.getElementById('panel-map').style.display = tab === 'map' ? 'block' : 'none';
+}
+
+// =====================
+// HISTORY
+// =====================
+function renderHistory(filter) {
+  const container = document.getElementById('history-cards');
+  const filtered = filter === 'all' ? historyData : historyData.filter(h => h.severity === filter);
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>No consultations found for this filter.</p></div>`;
+    return;
+  }
+
+  const severityColors = { low: 'var(--secondary)', medium: 'var(--warning)', high: 'var(--danger)' };
+  const severityLabels = { low: '🟢 Low Risk', medium: '🟡 Medium Risk', high: '🔴 High Risk' };
+
+  container.innerHTML = filtered.map(h => `
+    <div class="history-card fade-in" onclick="showToast('Opening consultation details...')">
+      <div>
+        <div class="history-card-title">${h.title}</div>
+        <div class="history-card-summary">${h.summary}</div>
+        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 10px; line-height: 1.5;">
+          <strong>AI Advice:</strong> ${h.advice}
+        </div>
+        <div class="history-card-meta">${h.date} · ${h.time}</div>
+      </div>
+      <div class="history-card-right">
+        <span class="severity-badge ${h.severity}">${severityLabels[h.severity]}</span>
+        <button onclick="event.stopPropagation(); showToast('Downloading report...')" style="background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-size: 11px; cursor: pointer; color: var(--text-secondary);">📥 Export</button>
+      </div>
+    </div>`).join('');
+}
+
+function filterHistory(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHistory(filter);
+}
+
+// =====================
+// UTILITIES
+// =====================
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function callEmergency() {
+  showToast('Emergency: Calling 108... Please stay calm and remain at your location.');
+}
+
+// =====================
+// INIT
+// =====================
+renderHistory('all');
+</script>
+</body>
+</html>
